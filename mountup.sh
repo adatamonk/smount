@@ -3,6 +3,7 @@ echo -e "Starting mountup.sh"
 USER=max #user name goes here
 GROUP=max #group name goes here
 SET_DIR=~/smount/sets
+MOUNT_DIR=/mnt/sharedrives
 # Make Work Dirs
 sudo mkdir -p /opt/sharedrives
 sudo chown -R $USER:$GROUP /opt/sharedrives
@@ -36,7 +37,7 @@ make_config () {
       conf="
       RCLONE_RC_PORT=$count
       SOURCE_REMOTE=$name:
-      DESTINATION_DIR=/mnt/sharedrives/$name/
+      DESTINATION_DIR=$MOUNT_DIR/$name/
       ";
       echo "$conf" > /opt/sharedrives/$name.conf
     done
