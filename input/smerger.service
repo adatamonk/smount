@@ -1,5 +1,5 @@
 [Unit]
-Description=MergerFS Film Mount
+Description=MergerFS for Sharedrive Mount
 After=network-online.target
 
 [Service]
