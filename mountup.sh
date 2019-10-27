@@ -4,19 +4,23 @@ USER=max #user name goes here
 GROUP=max #group name goes here
 SET_DIR=~/smount/sets
 MOUNT_DIR=/mnt/sharedrives
+UMOUNT_DIR=/mnt/sharedrives #if different union mounting reqd
+MERGER_DIR=/mnt/unionfs
 # Make Work Dirs
 sudo mkdir -p /opt/sharedrives
 sudo chown -R $USER:$GROUP /opt/sharedrives
 sudo chmod -R 775 /opt/sharedrives
 # Create and place service files
-export user=$USER group=$GROUP
+export user=$USER group=$GROUP umount_dir=$UMOUNT_DIR merger_dir=$MERGER_DIR 
 envsubst '$user,$group' <./input/teamdrive@.service >./output/teamdrive@.service
 envsubst '$user,$group' <./input/teamdrive_primer@.service >./output/teamdrive_primer@.service
 envsubst '$user,$group' <./input/teamdrive_primer@.timer >./output/teamdrive_primer@.timer
+envsubst '$umount_dir,$merger_dir' <./input/smerger.service >./output/smerger.service
 #copynewfiles
 sudo bash -c 'cp ./output/teamdrive@.service /etc/systemd/system/teamdrive@.service'
 sudo bash -c 'cp ./output/teamdrive_primer@.service /etc/systemd/system/teamdrive_primer@.service'
 sudo bash -c 'cp ./output/teamdrive_primer@.timer /etc/systemd/system/teamdrive_primer@.timer'
+sudo bash -c 'cp ./output/smerger.service /etc/systemd/system/smerger.service'
 # enable new services
 sudo systemctl enable teamdrive@.service
 sudo systemctl enable teamdrive_primer@.service
@@ -72,4 +76,7 @@ sudo systemctl daemon-reload
 make_vfskill $1
 chmod +x vfs_starter.sh
 ./vfs_starter.sh  #fire the starter
+echo "sharedrive vfs mounts complete"
+sudo systemctl enable smerger.service
+sudo systemctl start smerger.service
 echo "sharedrive vfs mounts complete"
