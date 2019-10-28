@@ -79,4 +79,4 @@ chmod +x vfs_starter.sh
 echo "sharedrive vfs mounts complete"
 sudo systemctl enable smerger.service
 sudo systemctl start smerger.service
-echo "sharedrive vfs mounts complete"
+echo "merger setup complete, requires reboot if using non empty paths for merger"
